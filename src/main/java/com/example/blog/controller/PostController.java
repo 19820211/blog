@@ -1,5 +1,6 @@
 package com.example.blog.controller;
 
+import com.example.blog.model.Comment;
 import com.example.blog.model.Post;
 import com.example.blog.repository.PostRepository;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ public class PostController {
         this.postRepository = postRepository;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/add") //zmienna dla adnotacji
     public String addPost(ModelMap modelMap){
         modelMap.put("post", new Post());
         return "posts/add"; //skierowanie do pliku html
@@ -31,9 +32,16 @@ public class PostController {
     // posts/1
     @GetMapping("/{id}")
     public String showPost(@PathVariable Integer id, ModelMap modelMap){
-        modelMap.put("post", postRepository.findById(id).get());
+        Post post =postRepository.findById(id).get();
+        modelMap.put("post", post);
+        Comment comment = new Comment();
+        comment.setPost(post);
+        //musimy przekazać pusty komentarz
+        modelMap.put("comment", comment);
+        modelMap.put("comments", post.getComments());//dodawanie komentarzy
         return "posts/show";
     }
+
 
 
 }

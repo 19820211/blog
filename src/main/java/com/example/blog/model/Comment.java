@@ -14,8 +14,12 @@ public class Comment {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Post post; //pole do którego postu jest/odnosi się
 
-
+    @Override
+    public String toString() {
+        return getDescription();
+    }
 }
+
